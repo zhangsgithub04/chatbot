@@ -9,6 +9,9 @@ st.write(
 
 topic = st.text_input("Please input a Topic")
 
+distribution=st.text_input(:Please input the Linux Distribution")
+                           
+
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
 # via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
@@ -33,7 +36,9 @@ else:
 
     # Create a chat input field to allow the user to enter a message. This will display
     # automatically at the bottom of the page.
-    if prompt := st.chat_input("What is up?"):
+    
+    #if prompt := st.chat_input("What is up?"):
+    if prompt="Please generate lab procedures for "+ topic + "with respec to " +distribution :
 
         # Store and display the current prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
