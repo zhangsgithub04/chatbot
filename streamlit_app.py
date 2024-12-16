@@ -34,19 +34,20 @@ else:
             st.markdown(message["content"])
 
     # Create a submit button to initiate the chat.
+    col1, col2 = st.columns([6, 6])
     if not st.session_state.lab_generated:
-        submitted = st.button("Submit")
+        submitted = col1.button("Submit")
         next_lab = False
     else:
         submitted = False
-        next_lab = st.button("Next Lab")
+        next_lab = col1.button("Next Lab")
 
     if submitted or next_lab:
         if next_lab:
             st.session_state.messages = []
             st.session_state.lab_generated = False
         # Create a prompt.
-        prompt = "Please generate lab procedures for " + topic + " with respect to " + distribution
+        prompt = "Please generate a detalied lab procedure with detailed commands and options, as well as justification for " + topic + " with respect to " + distribution
 
         # Store and display the current prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
@@ -71,4 +72,4 @@ else:
         st.session_state.lab_generated = True
 
     if st.session_state.lab_generated:
-        st.write("Lab generated successfully! Click 'Next Lab' to generate another lab.")
+        col2.write("Lab generated successfully!")
