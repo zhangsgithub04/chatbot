@@ -25,6 +25,8 @@ else:
     # messages persist across reruns.
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    if "lab_generated" not in st.session_state:
+        st.session_state.lab_generated = False
 
     # Display the existing chat messages via `st.chat_message`.
     for message in st.session_state.messages:
@@ -32,11 +34,18 @@ else:
             st.markdown(message["content"])
 
     # Create a submit button to initiate the chat.
-    submitted = st.button("Submit")
+    if not st.session_state.lab_generated:
+        submitted = st.button("Submit")
+    else:
+        submitted = False
+        next_lab = st.button("Next Lab")
 
-    if submitted:
+    if submitted or next_lab:
+        if next_lab:
+            st.session_state.messages = []
+            st.session_state.lab_generated = False
         # Create a prompt.
-        prompt = "Please generate lab procedures for " + topic + " with respect to " + distribution
+        prompt = "Please generate lab procedures with detailed command and options, annoted by explainations for " + topic + " with respect to " + distribution
 
         # Store and display the current prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
@@ -58,3 +67,7 @@ else:
         with st.chat_message("assistant"):
             response = st.write_stream(stream)
         st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.lab_generated = True
+
+    if st.session_state.lab_generated:
+        st.write("Lab generated successfully! Click 'Next Lab' to generate another lab.")
