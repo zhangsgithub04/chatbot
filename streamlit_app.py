@@ -9,7 +9,7 @@ st.write(
 
 topic = st.text_input("Please input a Topic")
 
-distribution=st.text_input(:Please input the Linux Distribution")
+distribution=st.text_input("Please input the Linux Distribution")
                            
 
 # Ask user for their OpenAI API key via `st.text_input`.
