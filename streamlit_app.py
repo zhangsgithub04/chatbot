@@ -7,8 +7,8 @@ st.write(
     "Input a topic "
 )
 
-topic = st.text_input("Please input a Topic")
-distribution = st.text_input("Please input the Linux Distribution")
+topic = st.text_input("Please input a Topic", disabled=True)
+distribution = st.text_input("Please input the Linux Distribution", disabled=True)
 
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
@@ -27,6 +27,10 @@ else:
         st.session_state.messages = []
     if "lab_generated" not in st.session_state:
         st.session_state.lab_generated = False
+    if "current_topic" not in st.session_state:
+        st.session_state.current_topic = ""
+    if "current_distribution" not in st.session_state:
+        st.session_state.current_distribution = ""
 
     # Display the existing chat messages via `st.chat_message`.
     for message in st.session_state.messages:
@@ -46,8 +50,19 @@ else:
         if next_lab:
             st.session_state.messages = []
             st.session_state.lab_generated = False
+            topic = st.text_input("Please input a Topic", disabled=False)
+            distribution = st.text_input("Please input the Linux Distribution", disabled=False)
+        else:
+            st.session_state.current_topic = topic
+            st.session_state.current_distribution = distribution
+            topic = st.text_input("Please input a Topic", value=topic, disabled=True)
+            distribution = st.text_input("Please input the Linux Distribution", value=distribution, disabled=True)
+
         # Create a prompt.
-        prompt = "Please generate a detalied lab procedure with detailed commands and options, as well as justification for " + topic + " with respect to " + distribution
+        if next_lab:
+            prompt = "Please generate a detalied lab procedure with detailed commands and options, as well as justification for " + topic + " with respect to " + distribution
+        else:
+            prompt = "Please generate a detalied lab procedure with detailed commands and options, as well as justification for " + st.session_state.current_topic + " with respect to " + st.session_state.current_distribution
 
         # Store and display the current prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
