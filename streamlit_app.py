@@ -34,8 +34,10 @@ else:
     # Create a sidebar to display lab outputs
     st.sidebar.header("Lab Outputs")
     for i, output in enumerate(st.session_state.lab_outputs):
-        st.sidebar.subheader(f"Lab {i+1}")
-        st.sidebar.write(output)
+        title = output["title"]
+        lab_output = output["output"]
+        st.sidebar.subheader(f"Lab {i+1}: {title}")
+        st.sidebar.write(lab_output)
 
     # Display the existing chat messages via `st.chat_message`.
     for message in st.session_state.messages:
@@ -53,4 +55,53 @@ else:
         topic = st.text_input("Please input a Topic", value=st.session_state.current_topic, disabled=True)
         distribution = st.text_input("Please input the Linux Distribution", value=st.session_state.current_distribution, disabled=True)
         submitted = False
-        next_lab = col1
+        next_lab = col1.button("Next Lab")
+
+    if submitted or next_lab:
+        if next_lab:
+            st.session_state.messages = []
+            st.session_state.lab_generated = False
+            st.session_state.current_topic = ""
+            st.session_state.current_distribution = ""
+        else:
+            st.session_state.current_topic = topic
+            st.session_state.current_distribution = distribution
+
+        # Create a prompt.
+        prompt = "Please generate a detalied lab procedure with detailed commands and options, as well as justification for " + topic + " with respect to " + distribution
+
+        # Store and display the current prompt.
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        # Generate a response using the OpenAI API.
+        stream = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ],
+            stream=True,
+        )
+
+        # Stream the response to the chat using `st.write_stream`, then store it in 
+        # session state.
+        with st.chat_message("assistant"):
+            response = st.write_stream(stream)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.lab_generated = True
+
+        # Display the output
+        st.header("Lab Output")
+        st.write(response)
+
+        # Add the output to the list
+        lab_output = {
+            "title": f"{topic} on {distribution}",
+            "output": response
+        }
+        st.session_state.lab_outputs.append(lab_output)
+
+    if st.session_state.lab_generated:
+        col2.write("Lab generated successfully!")
