@@ -7,9 +7,6 @@ st.write(
     "Input a topic "
 )
 
-topic = st.text_input("Please input a Topic", disabled=True)
-distribution = st.text_input("Please input the Linux Distribution", disabled=True)
-
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
 # via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
@@ -40,9 +37,13 @@ else:
     # Create a submit button to initiate the chat.
     col1, col2 = st.columns([6, 6])
     if not st.session_state.lab_generated:
+        topic = st.text_input("Please input a Topic")
+        distribution = st.text_input("Please input the Linux Distribution")
         submitted = col1.button("Submit")
         next_lab = False
     else:
+        topic = st.text_input("Please input a Topic", value=st.session_state.current_topic, disabled=True)
+        distribution = st.text_input("Please input the Linux Distribution", value=st.session_state.current_distribution, disabled=True)
         submitted = False
         next_lab = col1.button("Next Lab")
 
@@ -50,19 +51,14 @@ else:
         if next_lab:
             st.session_state.messages = []
             st.session_state.lab_generated = False
-            topic = st.text_input("Please input a Topic", disabled=False)
-            distribution = st.text_input("Please input the Linux Distribution", disabled=False)
+            st.session_state.current_topic = ""
+            st.session_state.current_distribution = ""
         else:
             st.session_state.current_topic = topic
             st.session_state.current_distribution = distribution
-            topic = st.text_input("Please input a Topic", value=topic, disabled=True)
-            distribution = st.text_input("Please input the Linux Distribution", value=distribution, disabled=True)
 
         # Create a prompt.
-        if next_lab:
-            prompt = "Please generate a detalied lab procedure with detailed commands and options, as well as justification for " + topic + " with respect to " + distribution
-        else:
-            prompt = "Please generate a detalied lab procedure with detailed commands and options, as well as justification for " + st.session_state.current_topic + " with respect to " + st.session_state.current_distribution
+        prompt = "Please generate a detalied lab procedure with detailed commands and options, as well as justification for " + topic + " with respect to " + distribution
 
         # Store and display the current prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
