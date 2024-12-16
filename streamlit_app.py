@@ -38,7 +38,7 @@ else:
     # automatically at the bottom of the page.
     
     #if prompt := st.chat_input("What is up?"):
-    if prompt="Please generate lab procedures for "+ topic + "with respec to " +distribution :
+    if prompt := "Please generate lab procedures for "+ topic + "with respec to " +distribution :
 
         # Store and display the current prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
