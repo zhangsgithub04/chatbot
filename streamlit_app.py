@@ -2,10 +2,12 @@ import streamlit as st
 from openai import OpenAI
 
 # Show title and description.
-st.title("💬 Chatbot")
+st.title("💬 Generate Linux and Cybersecurity Lab Procedures")
 st.write(
-    "This is a modified chatbot that uses OpenAI's GPT-3.5 model to generate responses. "
+    "Input a topic "
    )
+
+topic = st.text_input("Please input a Topic")
 
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
