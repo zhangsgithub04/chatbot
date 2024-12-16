@@ -36,6 +36,7 @@ else:
     # Create a submit button to initiate the chat.
     if not st.session_state.lab_generated:
         submitted = st.button("Submit")
+        next_lab = False
     else:
         submitted = False
         next_lab = st.button("Next Lab")
@@ -45,7 +46,7 @@ else:
             st.session_state.messages = []
             st.session_state.lab_generated = False
         # Create a prompt.
-        prompt = "Please generate lab procedures with detailed command and options, annoted by explainations for " + topic + " with respect to " + distribution
+        prompt = "Please generate lab procedures for " + topic + " with respect to " + distribution
 
         # Store and display the current prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
