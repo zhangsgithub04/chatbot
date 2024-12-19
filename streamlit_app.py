@@ -2,7 +2,7 @@ import streamlit as st
 from openai import OpenAI
 
 # Show title and description.
-st.title("💬 Generate Linux and Cybersecurity Lab Procedures")
+st.title("💬 Generate Linux and Cybersecurity Lab Procedures (SUNY IITG 24-25)")
 st.write(
     "Input a topic "
 )
