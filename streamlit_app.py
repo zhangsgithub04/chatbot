@@ -18,7 +18,7 @@ model = ggi.GenerativeModel("gemini-pro")
 chat = model.start_chat()
 
 # Initialize zero-shot classifier
-classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli", hf_token=hf_api_key)
 
 def LLM_Response(question):
     """Send a message to the chat and return the response."""
