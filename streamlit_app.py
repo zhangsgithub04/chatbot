@@ -8,8 +8,10 @@ fetchpeed_api_key = st.secrets["gemini_api_key"]
 hf_api_key = st.secrets["hf_api_key"]
 
 # Configure Hugging Face API
-hf_api = HfApi()
-hf_api.set_access_token(hf_api_key)
+
+#hf_api = HfApi()
+#hf_api.set_access_token(hf_api_key)
+hf_api = HfApi(token=hf_api_key)
 
 # Configure Google Generative AI
 ggi.configure(api_key=fetchpeed_api_key)
