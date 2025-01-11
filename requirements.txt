@@ -1,6 +1,7 @@
 streamlit
 google-generativeai
-transformers
+transformers==4.21.3
 huggingface-hub
 pytorch
 #tensorflow
+keras
