@@ -1,9 +1,9 @@
-from dotenv import load_dotenv
+
 import streamlit as st
-import os
+
 import google.generativeai as ggi
 
-load_dotenv(".env")
+
 
 fetcheed_api_key = st.secrets["gemini_api_key")
 ggi.configure(api_key = fetcheed_api_key)
